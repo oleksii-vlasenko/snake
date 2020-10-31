@@ -223,9 +223,7 @@ public class Lee {
         LinkedList<LPoint> path3 = getMaxTrace(head, tail, body, obstacles);
         if (path3.size() > 2) return path3;
 
-        LinkedList<LPoint> path4 = getMaxTrace(head, apple, body, obstacles);
-
-        return path4;
+        return getMaxTrace(head, apple, body, obstacles);
     }
 }
 
@@ -288,6 +286,7 @@ class LeeSpec {
         assertEquals(result, lee.getVSnake(snake, path));
     }
 
+    @Description("Virtual snake (path < snake)")
     @Test
     public void test3() {
         Lee lee = new Lee(5, 5);
@@ -313,6 +312,7 @@ class LeeSpec {
         assertEquals(result, lee.getVSnake(snake, path));
     }
 
+    @Description("Path_1 (head - apple)")
     @Test
     public void test10() {
         Lee lee = new Lee(5, 5);
@@ -333,6 +333,7 @@ class LeeSpec {
         assertEquals(result, trace);
     }
 
+    @Description("Virtual snake (path == snake)")
     @Test
     public void test11() {
         Lee lee = new Lee(5, 5);
@@ -378,64 +379,6 @@ class LeeSpec {
             add(LPoint.of(4, 1));
         }};
         assertNotEquals(result, trace);
-    }
-
-    @Test
-    public void test21() {
-        Lee lee = new Lee(5, 5);
-
-        LPoint apple = LPoint.of(4, 1);
-        LinkedList<LPoint> body = new LinkedList<>() {{
-            add(LPoint.of(4, 2));
-            add(LPoint.of(3, 2));
-            add(LPoint.of(2, 2));
-            add(LPoint.of(1, 2));
-            add(LPoint.of(0, 2));
-            add(LPoint.of(0, 3));
-            add(LPoint.of(0, 4));
-            add(LPoint.of(1, 4));
-            add(LPoint.of(2, 4));
-        }};
-        LinkedList<LPoint> trace = lee.trace(body.getFirst(), body.getLast(), body, apple, new LinkedList<>());
-        LinkedList<Object> result = new LinkedList<>() {{
-            add(LPoint.of(4, 2));
-            add(LPoint.of(4, 3));
-            add(LPoint.of(4, 4));
-            add(LPoint.of(3, 4));
-            add(LPoint.of(3, 3));
-            add(LPoint.of(2, 3));
-            add(LPoint.of(2, 4));
-        }};
-        assertEquals(result, trace);
-    }
-
-    @Test
-    public void test30() {
-        Lee lee = new Lee(5, 5);
-
-        LPoint apple = LPoint.of(4, 1);
-        LinkedList<LPoint> body = new LinkedList<>() {{
-            add(LPoint.of(4, 2));
-            add(LPoint.of(3, 2));
-            add(LPoint.of(2, 2));
-            add(LPoint.of(1, 2));
-            add(LPoint.of(0, 2));
-            add(LPoint.of(0, 3));
-            add(LPoint.of(0, 4));
-            add(LPoint.of(1, 4));
-            add(LPoint.of(2, 4));
-        }};
-        LinkedList<LPoint> trace = lee.trace(body.getFirst(), body.getLast(), body, apple, new LinkedList<>());
-        LinkedList<Object> result = new LinkedList<>() {{
-            add(LPoint.of(4, 2));
-            add(LPoint.of(4, 3));
-            add(LPoint.of(4, 4));
-            add(LPoint.of(3, 4));
-            add(LPoint.of(3, 3));
-            add(LPoint.of(2, 3));
-            add(LPoint.of(2, 4));
-        }};
-        assertEquals(result, trace);
     }
 
     @Test

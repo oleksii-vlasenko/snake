@@ -47,6 +47,8 @@ public class YourSolver implements Solver<Board> {
     private static final int[] down = {0, -1};
     private static final int[] left = {-1, 0};
 
+    private final int maxLength = 120;
+
 
     public YourSolver(Dice dice) {
         this.dice = dice;
@@ -128,14 +130,22 @@ public class YourSolver implements Solver<Board> {
         LinkedList<LPoint> snake = getCurrSnake();
 
         List<Point> stones = board.getStones();
+        LPoint stone = LPoint.of(stones.get(0).getX(), stones.get(0).getY());
 
-        List<LPoint> obstacles = Stream.of
-                (board.getWalls().stream().map(w -> LPoint.of(w.getX(), w.getY())),
+        List<LPoint> obstacles = snake.size() <= maxLength
+                ? Stream.of(board.getWalls().stream().map(w -> LPoint.of(w.getX(), w.getY())),
                         stones.stream().map(s -> LPoint.of(s.getX(), s.getY())))
-                .flatMap(a -> a)
+                        .flatMap(a -> a)
+                        .collect(Collectors.toList())
+                : board.getWalls().stream().map(w -> LPoint.of(w.getX(), w.getY()))
                 .collect(Collectors.toList());
+
         System.out.printf("Snake length: %d\n", snake.size());
-        LinkedList<LPoint> trace = lee.trace(snake.getFirst(), snake.getLast(), snake, apple, obstacles);
+
+        LinkedList<LPoint> trace = snake.size() <= maxLength
+                ? lee.trace(snake.getFirst(), snake.getLast(), snake, apple, obstacles)
+                : lee.trace(snake.getFirst(), snake.getLast(), snake, stone, obstacles);
+
         if (trace.size() > 1) {
             LPoint nextMove = trace.get(1);
 
